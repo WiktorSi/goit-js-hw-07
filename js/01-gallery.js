@@ -13,16 +13,22 @@ gallery.addEventListener('click', (event) => {
     const source = event.target.dataset.source;
     if (event.target.nodeName !== 'IMG')
         return;
-    const instance = basicLightbox.create(`<img src="${source}" width="800" height="600">`,
-    
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-                instance.close()
+   
+        
+        const instance = basicLightbox.create(`<img src="${source}" width="800" height="600">`,
+        {
+            onCLose: (instance) => {
+                gallery.removeEventListener("keydown", handleKeypress);
+            }
+        });
+        
+        function handleKeypress (event) {
+             if (event.key === 'Escape') {
+                 instance.close();
+             }
+         }
+        gallery.addEventListener("keydown", handleKeypress); 
+        
+            instance.show();  
         }
-    }))  
-
-    instance.show()
-    
-})
-
-    
+)
